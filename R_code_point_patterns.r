@@ -64,3 +64,73 @@ covids <- ppp(lon, lat, c(-180,180), c(-90,90))
 d <- density(covids)
 plot(d)
 points(covids)
+
+# Lezione 2 (1 Aprile)
+
+# imposto i dati di ieri
+# con RStudio è gia tuto salvato
+setwd("~/lab/")
+load("point_pattern.RData")
+# carico la libreria spatstat
+library(spatstat)
+
+plot(d)
+
+# voglio cambiare la gamma di colori del grafico di densità=palette di colori
+# do un nome alla palette, creo una gamma(arrey) di colori dopo la parentesi (c('colore1','colore2',...)
+# cl= colour (lo ho scleto io per comodità)
+# si usa una virgoletta
+# qunati mini livelli tra un colore all'altro? piu ne ho meglio è cosi ho una maggior gradazione es. (100) = 100 gradazioni
+cl <- colorRampPalette(c('yellow','orange','red'))(100)
+
+# Faccio il grafico di denistà e gli specifico che colori volgio(quelli che ho fatto io)
+plot(d,col=cl)
+
+# ESERCIZIO, plot della mappa dal verde al blu
+
+cl1 <- colorRampPalette(c('green','blue','purple'))(100)
+plot(d,col=cl1)
+
+# con pionts posso poi inserire i punti di ieri del COVIDS
+point(covids)
+# posso anche mettere i confini degli altri stati
+# coastlines = nome del nuovo file
+# readOGR è parte di una libreria GDAL (libreia Geospaziale che permette di leggere qualsiasi tipo di file raster o vettoriale)
+# rGDAL libreria di R
+# installo con le virgolette perche devo uscire da GitHub
+install.packages("rgdal")
+library(rgdal)
+# i file devono essere nella cartella LAB liberi
+coastlines <- readOGR("ne_10m_coastline.shp")
+# adesso plotto i dati 
+plot(coastlines,add=T)
+
+# ESERCIZIOplot della mappa con nuova colorazione ed aggiunta della coastlines
+cl1 <- colorRampPalette(c('blue','purple','light green','yellow'))(100)
+plot(d,col=cl1)
+plot(coastlines,add=T)
+# col=yellow, setto i confini dei continenti col giallo 
+plot(coastlines,add=T,col=yellow)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
