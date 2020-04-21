@@ -1,0 +1,3 @@
+# Argomento = land cover 
+
+setwd
