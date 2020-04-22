@@ -40,6 +40,111 @@ plot(p224r63_2011c$map)
 # con due classi incertezza bassa
 
 
+# PARTE 2 (22 Aprile)
+
+# ricarico il grafico dei POINT PATTERN per poter fare l'interpolazione sui valori dei casi del covid
+
+library(spatstat)
+library(rgdal) # for the coastlines
+
+setwd("~/lab/")
+load("point_pattern.RData")
+ls()
+
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(d, col=cl5, main="density")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+
+
+# interpolazione
+
+# 1a cosa da fare. Guardare la tabella dei dati e vedere quale variabile mi interessa
+# head(covid)   a me interessa colonna "cases"
+# funzione marks = valori che do ai dati del point pattern e lo associo alla colonna cases
+
+marks(covids) <- covid$cases
+
+# s ( per stima )
+# smooth dei punti spaziali del covid
+
+s <- Smooth(covids)
+
+plot(s)
+
+# aggiungo titolo, colori diversi(colourpalette), aggiungo i punti e aggiungo coastiles al plot s
+
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(s, col=cl5, main="density")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+# GRFICO = stima dei casi. Molto alta verso DX(zona cina) 
+
+text(covids)    # per aggiungere il valore dei punti 
+
+
+# MAPPA FINALE
+# paragonare i due grafici plottati, quello sulla densita e quello sull interpolazione
+
+par(mfrow=c(2,1))
+
+# densità
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(d, col=cl5, main="density")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+# interpolazione del numero di casi
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(s, col=cl5, main="estimate of cases")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+ 
+
+
+# TESI SAN MARINO
+# seto la working directory
+# prima cosa carico i dati 
+
+load("Tesi.Rdata")
+ls()  # per vedere cosa c'è dentro
+head(Tesi)
+
+# grafico densita dei punti perche come varibili ho le coordinate
+
+library(spatstat)  # per usare ppp
+
+# devo fare un ppp per crearlo mi serve coordinata x, coord.y, c(xmin,xmax),c(ymin,ymax) cioe i miniti della x e della y
+# uso funzione che si chiama summery che mi dice i valori min e max delle coordinate
+# x va da 12.42 a 12.46 (mettero in realta 12.41 e 12.47 per stare un po piu larghi)
+# y da 43.91 a 43.93 ( aumento di 1 per estendere)
+
+attach(Tesi)
+summary(Tesi)
+
+Tesippp <- ppp(Longitude,Latitude,c(12.41,12.47),c(43.90,43.94))
+
+# grafico della densità
+
+dT <- density(Tesippp)
+
+plot(dT)
+
+points(Tesippp,col="green")
+
+
+
+
+
+
+
 
 
 
