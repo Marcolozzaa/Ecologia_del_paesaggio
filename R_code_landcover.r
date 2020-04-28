@@ -126,7 +126,8 @@ library(spatstat)  # per usare ppp
 # x va da 12.42 a 12.46 (mettero in realta 12.41 e 12.47 per stare un po piu larghi)
 # y da 43.91 a 43.93 ( aumento di 1 per estendere)
 
-attach(Tesi)
+attach(Tesi) # super importante
+
 summary(Tesi)
 
 Tesippp <- ppp(Longitude,Latitude,c(12.41,12.47),c(43.90,43.94))
@@ -139,6 +140,77 @@ plot(dT)
 
 points(Tesippp,col="green")
 
+
+
+# SAN MARINO parte 2 
+
+setwd("~/Desktop/Eco del Paesaggio/LAB")
+load("SAN MARINO.RData")
+
+ls() # cosi vedo che dati ho all'interno
+     # dT = è la density map
+     # Tesi = era un dataset
+     # Tesippp = point pattern
+
+library(spatstat)
+     
+plot(dT)
+points(Tesippp, col="green") # grafico che avevo gia otteuto con densita piu elevata verso il centro
+
+# quale è la ricchezza specifica? Per fare INTERPOLAZIONE
+# prima faccio head e vado a vedere che dati ho
+# campo "species richness"
+head(Tesi)
+
+# marks, valori della variabile che voglio interpolare associata ai valori del PPP(point pattern che adesso non è associato a nulla)
+
+marks(Tesippp) <- Tesi$Species_richness
+
+# FUNZIONE SMOOTH = INTERPOLATORE!! mappa raster a partite da volori di punti 
+# due punti misurati, calcolo la media tra i due e vado avanti cosi
+
+interpol <- Smooth(Tesippp)
+
+plot(interpol)
+points(TESI,col="green") # per aggiungere i punti
+
+# i valori di ricchezza specifica sono distribuiti diversamente dalla densità
+# valori piu alti nella parte centrale e sud-est
+
+# AGGIUNGO FILE VETTORIALE SI SAN MARINO 
+
+# library RGDAL per leggere immagini vettoriali 
+library(rgdal)
+# OGR = file vettoriale
+sanmarino <- readOGR("San_Marino.shp")
+
+plot(sanmarino) # è un poligono
+# aggiungo i punti di interpol sopra a sanmarino
+# aggiungo anche i punti
+plot(interpol,add=T) # add=T per aggiungere dei pezzi alla mappa precedente
+points(Tesippp,col="green")
+plot(sanmarino,add=T) # per sovraporre e vedere i confini di San Marino
+
+# UNISCO I DUE GRAFICI (densità ed interpolazione) con una colonna e due file
+
+par(mfrow=c(2,1))
+
+plot(dT, main="Density of points")
+points(Tesippp,col="green")
+
+plot(interpol, main="Estimate of species richness")
+points(Tesippp,col="green")
+
+# non cosidero pero l'uso del suolo, es, vicino c'è zona urbana dove avro una bassa ricchezza specifica
+
+# STESSI FILE UNITI MA SU DUE COLONNE E UNA RIGA
+par(mfrow=c(1,2))
+
+plot(dT, main="Density of points")
+points(Tesippp,col="green")
+
+plot(interpol, main="Estimate of species richness")
+points(Tesippp,col="green")
 
 
 
