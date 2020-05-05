@@ -1,3 +1,8 @@
+install.packages("gridExtra")
+install.packages("RStoolbox")
+library(ggplot2)
+library(raster)
+
 # Ananisi multitemporali con terreno suddiviso in varie classi di copertura del suolo 
 
 setwd("~/Desktop/Eco del Paesaggio/LAB")
@@ -85,7 +90,7 @@ percent2 # che è 47.8% e 52.2%(di foresta)
 cover <- c("Agriculture","Forest")
 before <- c(10.6,89.4)
 after <- c(47.8,52.2)
-# creo le colonne
+# creo le colonne con la cover, prima del disboscamento e dopo il disb.
 
 output <- data.frame(cover,before,after)
 
@@ -93,6 +98,66 @@ output <- data.frame(cover,before,after)
 # richimao "ggplot2"
 
 library(gglpot2)
+
+# GIORNO DUE
+# ricarico dati RData e Working directory
+
+load("~/Desktop/Eco del Paesaggio/LAB/defor.RData")
+setwd("~/Desktop/Eco del Paesaggio/LAB")
+ls()   # d1c e d2c sono i due grafici che mi interessano
+
+# ri visualizzo i grafici dell'altra volta
+par(mfrow=c(2,1))
+cl <- colorRampPalette(c('black','green'))(100)
+plot(d2c$map, col=cl)
+plot(d1c$map, col=cl)
+
+
+
+library(ggplot2)
+# grafico con ggplot = ISTOGRAMMA DELLA % DI FOREST COVER 
+# aes= aestetichs
+# colore basato sulla cover 
+
+# p1 DEFORESTAZIONE BEFORE
+
+p1 <- ggplot(output, aes(x=cover,y=before,color=cover)) + geom_bar(stat="identity",fill="white")
+plot(p1)
+
+# p2 DEF.AFTER
+
+p2 <- ggplot(output, aes(x=cover,y=after,color=cover)) + geom_bar(stat="identity",fill="white")
+plot(p2)
+
+install.packages("gridExtra")
+library("gridExtra")
+
+# grid.arrange(plot1,plot2,nrow=1) = due grafici nella stessa finestra 
+
+grid.arrange(p1,p2,nrow=1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
