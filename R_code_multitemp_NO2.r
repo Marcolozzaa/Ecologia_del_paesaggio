@@ -62,6 +62,45 @@ plot(EN13,col=cl)
 plot(EN01,EN02,col=cl)
 
 
+########### DAY 2
+
+# come faccio ad imporatre tutti ifile allo stesso tempo? SE HO TANTI FILES!!
+# devo creare una cartella all'interno della cartella LAB e cambiare la working directory
+# metto tutte le immagini nella nuova cartella "esa_no2" e la imposto come working directory
+
+library(raster)
+setwd("~/Desktop/Eco del Paesaggio/LAB/esa_no2")
+rlist <- list.files(pattern=".png")
+rlist         # appare la lista di tutti i files con estensione .png
+
+# funzione lapply (che si legge l applay) applica una funzione su una serie di elementi(una lista di files)
+# la funzione che volgio applicare sarà brick(per importare piu layers) oppure raster(per un singolo layer) per caricare le mie immagini
+# (rlist,raster) funzione raster applicata alla lista che ho creato prima
+
+listafinale <- lapply(rlist,raster)
+listafinale   # visualizzo 13 elementi in lista con le singole bande
+
+# adesso faccio il plot col par(4,4)
+# PER PRIMO DEVO USARE funzione stack per unire tutte le bande per creare un pacchetto di dati (e per poter fare poi PLOT)
+# unisco le immagini dove ogni banda equivale a un TEMPO diverso
+
+EN <- stack(listafinale)
+
+cl <- colorRampPalette(c("red","orange","yellow"))(100)
+plot(EN,col=cl)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
