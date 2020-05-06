@@ -137,8 +137,15 @@ library("gridExtra")
 grid.arrange(p1,p2,nrow=1)
 
 
+# AGGIUNGO UN LIMITE SULL'ASSE Y per visualizzare meglio i grafici con YLIM
 
+p1 <- ggplot(output, aes(x=cover, y=before, color=cover)) + 
+geom_bar(stat="identity", fill="white") +
+ylim(0, 100)
 
+p2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + 
+geom_bar(stat="identity", fill="white") +
+ylim(0, 100)
 
 
 
