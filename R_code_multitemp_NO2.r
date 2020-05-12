@@ -90,23 +90,29 @@ cl <- colorRampPalette(c("red","orange","yellow"))(100)
 plot(EN,col=cl)
 
 
+######### DAY 3 (12 amggio)
 
+library(sp)
+library(raster)
+setwd("~/Desktop/Eco del Paesaggio/LAB/esa_no2")  # "esa_no2" sarà la mia working direcorty
+rlist <- list.files(pattern=".png")
 
+ # adesso faccio la differenza dei pixel tra le immagini EN01 ed EN13 e lo plotto
 
+difEN <- EN$EN0013 - EN$EN0001
+cld <- colorRampPalette(c('blue','white','red'))(100) 
+plot(difEN, col=cld)
 
+cl <- colorRampPalette(c('red','orange','yellow'))(100)
+plot(EN, col=cl)   # per plottare poi tutta la lista di immagini raster
 
-
-
-
-
-
-
-
-
-
-
-
-
+# FUNZ. STAT. BOX PLOT = individua il range dei dati con mediana e media
+# ogni immagine EN avra il proprio boxplot con i suoi valori di mediana e di max e min
+# cambiamento contingente sui valori massimi! I valori medi sono diminuiti di poco
+boxplot(EN)
+boxplot(EN, horizontal=T) # per avere i box in orizzontale
+boxplot(EN, horizontal=T,outline=F)  # per rimuovere gli OUTLAINER (punti lontani dalla media)
+boxplot(EN, horizontal=T,outline=F,axes=T) # aggiungo gli assi (anche se ci dovrebbero essere di default)
 
 
 
