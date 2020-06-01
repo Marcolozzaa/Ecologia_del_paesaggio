@@ -1,0 +1,100 @@
+# INIZIO 
+
+install.packages("sp")
+
+# richiamo il pacchetto 
+
+library(sp)
+
+data(meuse)
+
+# se digito solo meuse avro tutta la tabella
+
+meuse 
+# visualizzo data set solo nelle prime righe
+head(meuse)
+# names = nome delle variabili
+names(meuse)
+
+# summery= si puo fare un abstact delle info del dataset e delle funzioni che contiene
+summary(meuse)
+
+# pairs= funzione che crea grafico mostruoso= correlazione tra le varie variabili(tutte insieme)
+pairs(meuse)
+
+# c'è il modo di ridurre il numero di variabili nella funzione pairs
+# ~ = TILDE, è un simbolo che significa UGUALE
+
+pairs(~ cadmium + copper + lead , data = meuse) 
+
+# EXERCISE 
+
+# [,3:6]= vuol fare un subset ([]), la "," vuol dire parti da, e 3:6 vuol dire dalla colonna 3 alla 6
+# pairs(meuse[,3:6]) = pairs(~cadmium+copper+lead+zinc,data = meuse)
+# " " si usano per argomento di testo
+
+pairs(meuse[,3:6],
+      col = "red",                                         # Cambio colore dei punti
+      pch = 19,                                            # Cambio la forma dei punti, pch=point character
+      labels = c("var1", "var2", "var3"),                  # Change labels of diagonal
+      main = "This is a nice pairs plot in R")             # Add a main title
+      
+      
+# AGGIUNGO ELEVATION (che è la 7ima variabile)
+pairs(meuse[,3:7],
+# il resto poi tutto uguale
+
+
+# FUNZIONI PANNEL
+
+# <- = dai nomi alle punzioni, ho chiamato con un certo nome un blocco di codici
+# faccio indice di correlazione tra x e y (tra due variabili)
+
+# PRIMA FUNZIONE
+panel.correlations <- function(x, y, digits=1, prefix="", cex.cor)
+
+     usr <- par("usr"); on.exit(par(usr))
+     par(usr = c(0, 1, 0, 1))
+     
+ 
+# SECONDA FUNZIONE -> panel.smoothing = È un plot di punti con "lowes" = smoother locale per mostrare una linea di correlazione tra variabili
+
+panel.smoothing <- function (x, y, col = par("col"), bg = NA, pch = par("pch"),
+   cex = 1, col.smooth = "red", span = 2/3, iter = 3, ...)
+   points(x, y, pch = pch, col = col, bg = bg, cex = cex)
+
+
+# TERZA FUNZIONE -> panel.histograms = ISTOGRAMMI,fa un istogramma delle distrubuzioni di frequenza
+
+panel.histograms <- function(x, ...)
+usr <- par("usr"); on.exit(par(usr))
+
+
+# Decido cosa mettere nei vari spazi del grafico (upper pannel,lower,diagonale(cioe centrale))
+
+pairs(meuse[,3:6], lower.panel = panel.correlations, upper.panel = panel.smoothing, diag.panel = panel.histograms)
+
+
+EXERCISE: mettere come lower panel lo smoothing, come diagonal apnel gli istogrammi e come upper panel le correlazioni 
+
+pairs(meuse[,3:6], lower.panel = panel.smoothing, upper.panel = panel.correlations, diag.panel = panel.histograms)
+
+
+# FUNZIONE PLOT
+
+# come sono relazionati tra loro cadmio e rame?
+# $ = in R collega un pezzo con un altro, nostro caso collega la colonna col proprio data set
+
+plot(meuse$cadmium,meuse$copper)
+
+# oppure allego il dataframe con attach= spiega a R che utilizzeremo sempre quel dataset per le alre funzuoni (cosi non uso $)
+
+attach(meuse)
+
+plot(cadmium,copper) 
+
+plot(cadmium, copper, pch=17, col="green", main="primo plot")
+
+plot(cadmium, copper, pch=17, col="green", main="primo plot", xlab="cadmio", ylab="rame") 
+
+plot(cadmium, copper, pch=17, col="green", main="primo plot", xlab="cadmio", ylab="rame", cex.lab=2, cex=2) 
