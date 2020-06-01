@@ -40,7 +40,7 @@ library(sp)
 
 data(meuse)
 
-# M.L : se digito solo meuse avro tutta la tabella
+# M.L : se digito solo meuse avrò tutta la tabella
 
 meuse 
 # M.L : visualizzo data set solo nelle prime righe
@@ -75,14 +75,12 @@ pairs(meuse[,3:6],
 # M.L : AGGIUNGO ELEVATION (che è la 7ima variabile)
 pairs(meuse[,3:7],
 # M.L : il resto poi tutto uguale
-
-
 # M.L : FUNZIONI PANNEL
-
-# M.L : <- = dai nomi alle punzioni, ho chiamato con un certo nome un blocco di codici
+# M.L : <- = dai nomi alle funzioni, ho chiamato con un certo nome un blocco di codici
 # M.L : faccio indice di correlazione tra x e y (tra due variabili)
 
 # M.L : PRIMA FUNZIONE
+      
 panel.correlations <- function(x, y, digits=1, prefix="", cex.cor)
 
      usr <- par("usr"); on.exit(par(usr))
@@ -113,7 +111,6 @@ pairs(meuse[,3:6], lower.panel = panel.smoothing, upper.panel = panel.correlatio
 
 
 # M.L : FUNZIONE PLOT
-
 # M.L : come sono relazionati tra loro cadmio e rame?
 # M.L : $ = in R collega un pezzo con un altro, nostro caso collega la colonna col proprio data set
 
@@ -141,10 +138,11 @@ plot(cadmium, copper, pch=17, col="green", main="primo plot", xlab="cadmio", yla
 
 ### 2. R_code_spatial
 
-
-
-
-
+install.packages("sp")
+install.packages("GGalli")
+library(sp)
+library(GGally)
+      
 # M.L : R spaziale : funzioni spaziali in Ecologia del Paesaggio
 
 install.packages("sp")
@@ -228,8 +226,8 @@ spplot(meuse,"zinc")
 
 ### 3. R_code_spatial_2
 
-
-
+install.packages("sp")
+library(sp)
 
 # INIZIO
 # M.L : installo "sp" se non lo ho ancora
@@ -291,8 +289,8 @@ plot(foram,carbon,col="green",cex=2,pch=3)
 # M.L : in questo caso dati del covid 19, creo la cartella
 # M.L : dico ad R quale cartella col comando "setworkingdirectoy" = setwd
 
-setwd("Deckstop/LAB")
-# M.L : su Mac no funzia... allora basta andare su files scegliere la cartella e fare import data set
+setwd("~/Desktop/Eco del Paesaggio/LAB") 
+
 
 # M.L : leggere la tabella
 # M.L : la tabella prima ha i titoli delle colonne e non i dati, quindi gli spiego che ho un Header(testa)
@@ -300,7 +298,6 @@ setwd("Deckstop/LAB")
 
 covid <- read.table("covid_agg.csv",head=TRUE)
 
-NON FUNZIA D.C!!!
 
 
 ########################################################################################################
@@ -309,9 +306,16 @@ NON FUNZIA D.C!!!
 
 
 ### 4. R_code_piont_pattern
+      
 
+install.packages("ggplot2") 
+install.packages("spatstat")
+install.packages("rgdal")
 
-
+library(ggplot2)
+library(spatstat)
+library(rgdal)
+      
 
 # ANALISI POINT PATTERNS
 
@@ -322,8 +326,8 @@ install.packages("spatstat")
 library(ggplot2)
 library(spatstat)
 
-# M.L : importo la working directory, con mec faccio Import dataset
-setwd("C:/lab")     
+# M.L : importo la working directory
+setwd("~/Desktop/Eco del Paesaggio/LAB")  
 
 # M.L : rinomino covid_agg in covid
 
@@ -434,9 +438,14 @@ plot(coastlines,add=T,col=yellow)
 
 
 ### 5. R_code_teleril
+      
 
-
-
+      
+install.packages("raster")
+library(raster)
+    
+      
+      
 # CODICE R PER ANALISI DI IMMAGINI SATELLITARI 
 
 install.packages("raster")
@@ -560,6 +569,7 @@ plotRGB(p224r63_2011, r=3, g=4, b=2,stretch="Lin") # M.L : per avere l'immagine 
 
 # PARTE 3
 # M.L : ricarico tutti i dati
+      
 install.packages("raster")
 
 library(raster)
@@ -726,11 +736,16 @@ plot(difdvilr50, col=coldifdvi)
 
 
 
-
+install.packages("raster")
+install.packages("ggplot2")
 install.packages("gridExtra")
 install.packages("RStoolbox")
-library(ggplot2)
+
 library(raster)
+library(ggplot2)
+library(gridExtra)
+library(RStoolbox)
+
 
 # M.L : Ananisi multitemporali con terreno suddiviso in varie classi di copertura del suolo 
 
@@ -793,6 +808,7 @@ plot(d1c$map, col=cl)
 
 # M.L : QUANTIFICO ADESSO LA PERCENTUALE di foresta persa (in base al numero di pixels appartenenti ad ogni classe)
 # M.L : MAPPA 1
+
 freq(d1c$map) # M.L : mi conta i pixel per ogni classe
               # M.L : n.di pixel area foresta = 305095
               # M.L : n.di pixel area aperta = 36197
@@ -886,6 +902,11 @@ ylim(0, 100)
 
 ### 8. R_code_multitemp_NO
 
+
+
+
+install.packages("raster")
+library(raster)
 
 
 
@@ -1021,6 +1042,14 @@ boxplot(EN, horizontal=T,outline=F,axes=T) # M.L : aggiungo gli assi (anche se c
 
 
 
+install.packages("ncdf4")
+install.packages("raster")
+library(ncdf4)
+library(raster)
+
+
+
+
 ### ESERCIZIO CON COMPERNICUS
 # M.L : caricare file assieme
 # M.L : differenza tra immagini
@@ -1118,8 +1147,17 @@ plot(predicted.snow.2025.norm, col=cl)
 
 
 
+install.packages("raster")
+install.packages("igraph")
+install.packages("ggplot2")
+library(raster)
+library(igraph)
+library(ggplot2)
+
+
+
 ##########
-# M.L : setto la workinf directory 
+# M.L : setto la working directory 
 
 setwd("~/Desktop/Eco del Paesaggio/LAB")
 
@@ -1207,6 +1245,7 @@ output <- data.frame(time,npatches)
 attach(output)
 
 library(ggplot2)
+
 ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity", fill="white")
 
 
