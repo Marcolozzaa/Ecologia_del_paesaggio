@@ -48,7 +48,7 @@ head(meuse)
 # M.L : names = nome delle variabili
 names(meuse)
 
-# M.L : summery= si puo fare un abstact delle info del dataset e delle funzioni che contiene
+# M.L : summery = si puo fare un abstact delle info del dataset e delle funzioni che contiene
 summary(meuse)
 
 # M.L : pairs= funzione che crea grafico mostruoso= correlazione tra le varie variabili(tutte insieme)
@@ -73,7 +73,8 @@ pairs(meuse[,3:6],
       
       
 # M.L : AGGIUNGO ELEVATION (che è la 7ima variabile)
-pairs(meuse[,3:7],
+
+pairs(meuse[,3:7])
 # M.L : il resto poi tutto uguale
 # M.L : FUNZIONI PANNEL
 # M.L : <- = dai nomi alle funzioni, ho chiamato con un certo nome un blocco di codici
@@ -174,8 +175,8 @@ plot(copper,zinc,col="green",pch=17,cex=2)
 plot(copper,zinc,col="green",pch=17,cex=2,xlab="rame",ylab="zinco")
 
 # M.L : multiframe (per mettere piu di un grafico nella stessa finestra), par è la funzione (poi decido se i grafici li volgio in riga o in colonna)
-# M.L : c(1,2) = una riga e due colonne , nele due colonne ho messo i due grafici sullo stesso piano, la stessa riga
-# M.L : sotto copio e incollo i due grafici da unire , (puo essere utile per es.analisi multitemporale (t0 e t1))
+# M.L : c(1,2) = una riga e due colonne , nelle due colonne ho messo i due grafici sullo stesso piano, la stessa riga
+# M.L : sotto copio e incollo i due grafici da unire ,(puo essere utile per es.analisi multitemporale (t0 e t1))
 
 par(mfrow=c(1,2))
 plot(copper,zinc,col="green",pch=17,cex=2)
@@ -247,8 +248,8 @@ coordinates(meuse)=~x+y
 
 spplot(meuse,"zinc")
 
-# M.L : ESERCIZIO: stessa cosa ma col rame 
-# M.L : il grafico del rame ha dei valori piuttosto alti nella parte vicino al fume e piu bassi allontanadosi dal fiume 
+# M.L : ESERCIZIO: stessa cosa ma con il rame 
+# M.L : il grafico del rame ha dei valori piuttosto alti nella parte vicino al fume e piu bassi allontanandosi dal fiume 
 # M.L : il fiume è molto inquinato 
 
 spplot(meuse,"copper")
@@ -265,8 +266,10 @@ bubble(meuse,"copper",col="red")
 
 # M.L : Lucia: foraminiferi con diversi plot
 10,20,35,55,67,80
+
 # M.L : questo è un array e si scrive con c
 c(10,20,35,55,67,80)
+
 # M.L : lo chiamo foram
 
 foram <- c(10,20,35,55,67,80)
@@ -285,7 +288,7 @@ carbon <- c(5,15,30,70,85,99)
 plot(foram,carbon,col="green",cex=2,pch=3)
 
 # ESERCIZIO
-# M.L : faccio dialogare R con dati dall'estreno, cioe col computer
+# M.L : faccio dialogare R con dati dall'estreno, cioe con il computer
 # M.L : in questo caso dati del covid 19, creo la cartella
 # M.L : dico ad R quale cartella col comando "setworkingdirectoy" = setwd
 
@@ -351,6 +354,7 @@ plot(covid$country,covid$cases,las=3,cex.lab=0.5, cex.axis=0.5)
 
 install.packages("ggplot2") 
 library(ggplot2)
+
 # M.L : mpg è un dataset di prassi già all'interno di ggplt2
 data(mpg)
 head(mpg)
@@ -384,7 +388,7 @@ d <- density(covids)
 plot(d)
 points(covids)
 
-# Lezione 2 (1 Aprile)
+# Parte 2 (lezione del 1 Aprile)
 
 # M.L : imposto i dati di ieri
 # M.L : con RStudio è gia tuto salvato
@@ -396,7 +400,7 @@ library(spatstat)
 plot(d)
 
 # M.L : voglio cambiare la gamma di colori del grafico di densità=palette di colori
-# M.L : do un nome alla palette, creo una gamma(arrey) di colori dopo la parentesi (c('colore1','colore2',...)
+# M.L : dò un nome alla palette, creo una gamma(arrey) di colori dopo la parentesi (c('colore1','colore2',...)
 # M.L : cl= colour (lo ho scleto io per comodità)
 # M.L : si usa una virgoletta
 # M.L : qunati mini livelli tra un colore all'altro? piu ne ho meglio è cosi ho una maggior gradazione es. (100) = 100 gradazioni
@@ -410,7 +414,7 @@ plot(d,col=cl)
 cl1 <- colorRampPalette(c('green','blue','purple'))(100)
 plot(d,col=cl1)
 
-# M.L : con pionts posso poi inserire i punti di ieri del COVIDS
+# M.L : con points posso poi inserire i punti di ieri del COVIDS
 point(covids)
 # M.L : posso anche mettere i confini degli altri stati
 # M.L : coastlines = nome del nuovo file
@@ -424,10 +428,12 @@ coastlines <- readOGR("ne_10m_coastline.shp")
 # M.L : adesso plotto i dati 
 plot(coastlines,add=T)
 
-# ESERCIZIOplot della mappa con nuova colorazione ed aggiunta della coastlines
+# ESERCIZIO <- plot della mappa con nuova colorazione ed aggiunta della coastlines
+
 cl1 <- colorRampPalette(c('blue','purple','light green','yellow'))(100)
 plot(d,col=cl1)
 plot(coastlines,add=T)
+
 # M.L : col=yellow, setto i confini dei continenti col giallo 
 plot(coastlines,add=T,col=yellow)
 
@@ -487,7 +493,6 @@ p224r63_2011 <- p224r63
 plot("p224r63_2011")
 
 # M.L : non me lo da perche bisogna caricare la libreria "raster"
-
 # M.L : cambio la colorazioe del Plot con "ColorRampPalette". Metto poi con c le colorazioni che voglio 
 
 cl <- colorRampPalette(c('black','grey','light grey'))(100)
@@ -550,7 +555,7 @@ plotRGB(p224r63_2011, r=3, g=2, b=1)
 
 plotRGB(p224r63_2011, r=3, g=2, b=1,stretch="Lin")
 
-# M.L : immagine come la vedrebbe occhio umano ma la vegetazione fitta puo essere confusa con ombre
+# M.L : immagine come la vedrebbe occhio umano ma la vegetazione fitta puo essere confusa con le ombre
 # M.L : allora aggiungo anche NIR ( tramite r=4 ) 4= infrarosso vicino 
 # M.L : scalo tutti i colori di uno per formare FALSE COLOR
 
@@ -582,7 +587,7 @@ load("teleril.RData")
 # M.L : a me interessa p224r63_2011
  ls()
 
-# M.L : importo adesso il file del 1988 per 
+# M.L : importo adesso il file del 1988 
 # M.L : uso comando brick per importare tutte le varie bande dell'immagine satellitare
 
 p224r63_1988 <- brick("p224r63_1988_masked.grd")
@@ -1020,8 +1025,9 @@ cl <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(EN, col=cl)   # M.L : per plottare poi tutta la lista di immagini raster
 
 # M.L : FUNZ. STAT. BOX PLOT = individua il range dei dati con mediana e media
-# M.L : ogni immagine EN avra il proprio boxplot con i suoi valori di mediana e di max e min
+# M.L : ogni immagine EN avrà il proprio boxplot con i suoi valori di mediana e di max e min
 # M.L : cambiamento contingente sui valori massimi! I valori medi sono diminuiti di poco
+
 boxplot(EN)
 boxplot(EN, horizontal=T) # M.L : per avere i box in orizzontale
 boxplot(EN, horizontal=T,outline=F)  # M.L : per rimuovere gli OUTLAINER (punti lontani dalla media)
@@ -1115,7 +1121,7 @@ dev.off() # M.L : per eliminare il par di prima
 
 plot(difsnow,col=cldif)
 
-####### M.L : faccio adesso una PREVISONE(SCENARIO) multimtemporale per vedere nl 2025 come sara la copertura nevosa di una determinata misura
+####### M.L : faccio adesso una PREVISONE(SCENARIO) multimtemporale per vedere come sarà nel 2025 la copertura nevosa di una determinata misura
 # M.L : dati basati sullo scarto quadratico medio (linea che unisce i miei dati e puo essere lineare, curva,seno-coseno,...)
 # M.L : facile se c'è una variazione lineare da un tempo all'altro 
 # M.L : magari i dati formano una curva a differenziale negativo
@@ -1222,7 +1228,7 @@ writeRaster(d2c.for.pacthes, "d2c.for.patches.tif")
 
 par(mfrow=c(1,2))
 plot(d1c.for.pacthes)
-plot(d2c.for.pacthes) # M.L : colori un po brutti
+plot(d2c.for.pacthes) # M.L : colori un pò brutti
 
 # M.L : creiamo un'altra color ramp palette per aumentare un po la differenziazione
 
