@@ -730,6 +730,242 @@ plot(difdvi,cl=cldifdvi)
 plot(difdvilr50, col=coldifdvi)
 
 
+########################################################################################################
+########################################################################################################
+########################################################################################################
+
+
+
+### 6. R_code_landcover
+
+
+
+install.packages("RStoolbox")
+install.packages("raster")
+install.packages("rgdal")
+install.packages("spatstat")
+library(RStoolbox)
+library(raster)
+library(rgdal)
+library(spatstat)
+
+
+# M.L : Argomento = land cover 
+
+setwd("~/Desktop/Eco del Paesaggio/LAB")
+
+install.packages("RStoolbox")
+library(RStoolbox)
+library(raster)
+
+# M.L : brick= impila i dati e portali su R
+
+p224r63_2011 <- brick("p224r63_2011_masked.hdr")
+
+# M.L : con le tre componenti, red=4 del vicino infrarosso,green=nel rosso, blue
+
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
+
+# M.L : della nostra immagine le classi sembrano 4
+# M.L : p224r63_2011c = "c" nel senso classificato
+
+p224r63_2011c <- unsuperClass(p224r63_2011, nClasses=4)
+
+# M.L : plotto la mappa       $map = mappa generata
+# M.L : valori pixel da 1 a 4
+
+plot(p224r63_2011c$map)
+
+# M.L : ma cambio i colori(che me li ha messi di standard R)
+
+clclass <- colorRampPalette(c('red', 'green', 'blue', 'black'))(100) 
+
+plot(p224r63_2011c$map, col=clclass)
+
+# M.L : proviamo a mettere le classi uguali a 2 invece che 4
+
+p224r63_2011c <- unsuperClass(p224r63_2011, nClasses=2)
+plot(p224r63_2011c$map)
+
+# M.L : in funzione del numero di classi aumenta l'incertezza
+# M.L : possiamo fare piu mappe con piu o meno classi per vedere le difernze tra i cluster dei pixel 
+# M.L : con due classi incertezza bassa
+
+
+# M.L : PARTE 2 (22 Aprile)
+
+# M.L : ricarico il grafico dei POINT PATTERN per poter fare l'interpolazione sui valori dei casi del covid
+
+library(spatstat)
+library(rgdal) # M.L : for the coastlines
+
+setwd("~/lab/")
+load("point_pattern.RData")
+ls()
+
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(d, col=cl5, main="density")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+
+
+# M.L : interpolazione
+
+# M.L : la cosa da fare. Guardare la tabella dei dati e vedere quale variabile mi interessa
+# M.L : head(covid)   a me interessa colonna "cases"
+# M.L : funzione marks = valori che do ai dati del point pattern e lo associo alla colonna cases
+
+marks(covids) <- covid$cases
+
+# M.L : s ( per stima )
+# M.L : smooth dei punti spaziali del covid
+
+s <- Smooth(covids)
+
+plot(s)
+
+# M.L : aggiungo titolo, colori diversi(colourpalette), aggiungo i punti e aggiungo coastiles al plot s
+
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(s, col=cl5, main="density")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+# M.L : GRFICO = stima dei casi. Molto alta verso DX(zona cina) 
+
+text(covids)    # M.L : per aggiungere il valore dei punti 
+
+
+# M.L : MAPPA FINALE
+# M.L : paragonare i due grafici plottati, quello sulla densita e quello sull interpolazione
+
+par(mfrow=c(2,1))
+
+# M.L : densità
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(d, col=cl5, main="density")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+# M.L : interpolazione del numero di casi
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(s, col=cl5, main="estimate of cases")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+ 
+
+
+# M.L : TESI SAN MARINO
+# M.L : setto la working directory
+# M.L : prima cosa carico i dati 
+
+load("Tesi.Rdata")
+ls()  # M.L : per vedere cosa c'è dentro
+head(Tesi)
+
+# M.L : grafico densita dei punti perche come varibili ho le coordinate
+
+library(spatstat)  # M.L : per usare ppp
+
+# M.L : devo fare un ppp per crearlo mi serve coordinata x, coord.y, c(xmin,xmax),c(ymin,ymax) cioe i miniti della x e della y
+# M.L : uso funzione che si chiama summery che mi dice i valori min e max delle coordinate
+# M.L : x va da 12.42 a 12.46 (mettero in realta 12.41 e 12.47 per stare un po piu larghi)
+# M.L : y da 43.91 a 43.93 ( aumento di 1 per estendere)
+
+attach(Tesi) # M.L : super importante
+
+summary(Tesi)
+
+Tesippp <- ppp(Longitude,Latitude,c(12.41,12.47),c(43.90,43.94))
+
+# M.L : grafico della densità
+
+dT <- density(Tesippp)
+
+plot(dT)
+
+points(Tesippp,col="green")
+
+
+
+# M.L : SAN MARINO parte 2 
+
+setwd("~/Desktop/Eco del Paesaggio/LAB")
+load("SAN MARINO.RData")
+
+ls() # M.L : cosi vedo che dati ho all'interno
+     # M.L : dT = è la density map
+     # M.L : Tesi = era un dataset
+     # M.L : Tesippp = point pattern
+
+library(spatstat)
+     
+plot(dT)
+points(Tesippp, col="green") # M.L : grafico che avevo gia otteuto con densita piu elevata verso il centro
+
+# M.L : quale è la ricchezza specifica? Per fare INTERPOLAZIONE
+# M.L : prima faccio head e vado a vedere che dati ho
+# M.L : campo "species richness"
+head(Tesi)
+
+# M.L : marks, valori della variabile che voglio interpolare associata ai valori del PPP(point pattern che adesso non è associato a nulla)
+
+marks(Tesippp) <- Tesi$Species_richness
+
+# M.L : FUNZIONE SMOOTH = INTERPOLATORE!! mappa raster a partite da volori di punti 
+# M.L : due punti misurati, calcolo la media tra i due e vado avanti cosi
+
+interpol <- Smooth(Tesippp)
+
+plot(interpol)
+points(TESI,col="green") # M.L : per aggiungere i punti
+
+# M.L : i valori di ricchezza specifica sono distribuiti diversamente dalla densità
+# M.L : valori piu alti nella parte centrale e sud-est
+
+# M.L : AGGIUNGO FILE VETTORIALE SI SAN MARINO 
+
+# M.L : library RGDAL per leggere immagini vettoriali 
+library(rgdal)
+
+# M.L : OGR = file vettoriale
+sanmarino <- readOGR("San_Marino.shp")
+
+plot(sanmarino) # M.L : è un poligono
+# M.L : aggiungo i punti di interpol sopra a sanmarino
+# M.L : aggiungo anche i punti
+plot(interpol,add=T) # M.L : add=T per aggiungere dei pezzi alla mappa precedente
+points(Tesippp,col="green")
+plot(sanmarino,add=T) # M.L : per sovraporre e vedere i confini di San Marino
+
+# M.L : UNISCO I DUE GRAFICI (densità ed interpolazione) con una colonna e due file
+
+par(mfrow=c(2,1))
+
+plot(dT, main="Density of points")
+points(Tesippp,col="green")
+
+plot(interpol, main="Estimate of species richness")
+points(Tesippp,col="green")
+
+# M.L : non cosidero pero l'uso del suolo, es, vicino c'è zona urbana dove avro una bassa ricchezza specifica
+
+# M.L : STESSI FILE UNITI MA SU DUE COLONNE E UNA RIGA
+par(mfrow=c(1,2))
+
+plot(dT, main="Density of points")
+points(Tesippp,col="green")
+
+plot(interpol, main="Estimate of species richness")
+points(Tesippp,col="green")
+
+
 
 ########################################################################################################
 ########################################################################################################
