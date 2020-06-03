@@ -12,7 +12,7 @@
 # 8. R_code_multitemp_NO2.r   
 # 9. R_code_snow.r   
 # 10. R_code_patches.r   
-
+# 11. R_code_crop.r
 
 
 
@@ -1489,6 +1489,108 @@ attach(output)
 library(ggplot2)
 
 ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity", fill="white")
+
+
+
+
+
+
+
+########################################################################################################
+########################################################################################################
+########################################################################################################
+
+
+
+
+
+### 11. R_code_crop
+
+
+
+
+install.packages("ncdf4")
+install.packages("raster")
+library(ncdf4)
+library(raster)
+
+
+
+
+
+# M.L : setto SNOW come cartella della working directory
+setwd("~/Desktop/Eco del Paesaggio/LAB/SNOW")
+
+# M.L : IMPORTO I DATI 
+# M.L : assicurarsi di non avere i dati da utilizzare su ICLOUD
+rlist <- list.files(pattern=".tif", full.names=T)
+
+# M.L : lapply apllica dei comandi a degli interi lista di file. Nel nostro caso è la funzione raster
+list_rast <- lapply(rlist, raster)
+
+
+# M.L : vogliamo creare uno stack
+snow.multitemp <- stack(list_rast)        # M.L : snow.multitemp (come time snow nel tempo)
+
+
+plot(snow.multitemp)       # M.L : colori a caso, li cambio con una colourramp palette
+
+
+cl <- colorRampPalette(c('darkblue','blue','light blue'))(100)
+plot(snow.multitemp,col=cl)
+
+# M.L : 1. metodo per fare una zoom con "extension"
+snow.multitemp
+plot(snow.multitemp$snow2010r, col=cl)
+
+extension <- c(6, 18, 40, 50)
+zoom(snow.multitemp$snow2010r, ext=extension)
+
+# M.L : poi la cambio per aggiustare la crop 
+extension <- c(6, 18, 35, 50)
+zoom(snow.multitemp$snow2010r, ext=extension)
+
+extension <- c(6, 20, 35, 50)
+zoom(snow.multitemp$snow2010r, ext=extension)
+
+# M.L : 2. metodo per fare una zoom con "Drae extent"
+
+plot(snow.multitemp$snow2010r, col=clb)
+ 
+
+zoom(snow.multitemp$snow2010r, ext=drawExtent())
+
+# M.L : 3. faccio una CROP dell'immagine
+
+extension <- c(6, 20, 35, 50)
+snow2010r.italy <- crop(snow.multitemp$snow2010r, extension)
+
+# M.L : effettuo crop su tutto lo stalk di dati
+snow.multitemp.italy <- crop(snow.multitemp, extension)
+plot(snow.multitemp.italy, col=clb) 
+# M.L : le legende pero nel plot non sono tutte uguali 
+snow.multitemp.italy # M.L : per vedere i valori max e min
+# M.L : utilizzo ZLIM
+plot(snow.multitemp.italy, col=clb, zlim=c(20,200))
+
+boxplot(snow.multitemp.italy, horizontal=T,outline=F)
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
 
 
 
