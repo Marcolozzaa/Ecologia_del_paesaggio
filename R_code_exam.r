@@ -1248,7 +1248,7 @@ plot(EN,col=cl)
 
 library(sp)
 library(raster)
-setwd("~/Desktop/Eco del Paesaggio/LAB/esa_no2")  # "esa_no2" sarà la mia working direcorty
+setwd("~/Desktop/Eco del Paesaggio/LAB/esa_no2")  # M.L : "esa_no2" sarà la mia working direcorty
 rlist <- list.files(pattern=".png")
 
  # M.L : adesso faccio la differenza dei pixel tra le immagini EN01 ed EN13 e lo plotto
@@ -1594,66 +1594,66 @@ library(sdm)
 library(raster)
 library(rgdal)
 
-# carico il file che mette a disposizione SDM
+# M.L : carico il file che mette a disposizione SDM
 
 file <- system.file("external/species.shp", package="sdm")
-species <- shapefile(file) # carico tutta la parte grafica
-species  # visualizzo le caratteristiche dei dati
-species$Occurrence  # visualizzo la struttura del dataset formato da punti di presenza-assenza(1-0)
+species <- shapefile(file) # M.L : carico tutta la parte grafica
+species  # M.L : visualizzo le caratteristiche dei dati
+species$Occurrence  # M.L : visualizzo la struttura del dataset formato da punti di presenza-assenza(1-0)
 
 
-# plot dataset specie e dentro a tutti i dati in occurance uguali a uno = colore blu, e rossi se sono uguali a 0
-# per il primo faccio un plot ma per aggiuungere altri punti devo fare funzione "points"
+# M.L : plot dataset specie e dentro a tutti i dati in occurance uguali a uno = colore blu, e rossi se sono uguali a 0
+# M.L : per il primo faccio un plot ma per aggiuungere altri punti devo fare funzione "points"
 
 
 plot(species[species$Occurrence == 1,],col='blue',pch=16)
 points(species[species$Occurrence == 0,],col='red',pch=16)
 
-# inserisco le mie varibili ambinetali 
+# M.L : inserisco le mie varibili ambinetali 
 
-path <- system.file("external", package="sdm") # contine diversi dati 
+path <- system.file("external", package="sdm") # M.L : contine diversi dati 
 
-# faccio una lista di dati con listfiles (tutti i dati che contengono "asc$)
+# M.L : faccio una lista di dati con listfiles (tutti i dati che contengono "asc$)
 lst <- list.files(path=path,pattern='asc$',full.names = T)
-lst  # contiene 4 varibili (elevation,vegetation, temp e precipitation)
- # queste variabili ci serviranno poi per prevedere la distribuzione dei punti
+lst  # M.L : contiene 4 varibili (elevation,vegetation, temp e precipitation)
+ # M.L : queste variabili ci serviranno poi per prevedere la distribuzione dei punti
 
 preds <- stack(lst)
 cl <- colorRampPalette(c('yellow','orange','red')) (100)
 cl <- colorRampPalette(c('blue','orange','red','yellow')) (100)
 plot(preds, col=cl)
 
-# plotto una delle variabili(elevation) e ci metto sopra i punti dell'inizio
+# M.L : plotto una delle variabili(elevation) e ci metto sopra i punti dell'inizio
 plot(preds$elevation, col=cl) 
-points(species[species$Occurrence == 1,], pch=16) # punti solo dove è presente
-                                                  # si nota come la distribuzione è sopratutto in basse elevations
+points(species[species$Occurrence == 1,], pch=16) # M.L : punti solo dove è presente
+                                                  # M.L : si nota come la distribuzione è sopratutto in basse elevations
 
-# plotto una seconda variabile(temp) e ci metto sopra i punti dell'inizio
+# M.L : plotto una seconda variabile(temp) e ci metto sopra i punti dell'inizio
 plot(preds$temperature, col=cl)
-points(species[species$Occurrence == 1,], pch=16)  # la specie non ama temperature troppo basse
+points(species[species$Occurrence == 1,], pch=16)  # M.L : la specie non ama temperature troppo basse
 
-# plotto i punti con la terza variabile(precipitations)
+# M.L : plotto i punti con la terza variabile(precipitations)
 plot(preds$precipitation, col=cl)
-points(species[species$Occurrence == 1,], pch=16) # situazione intermedia 
+points(species[species$Occurrence == 1,], pch=16) # M.L : situazione intermedia 
 
-# plotto i punti con la quarta variabile(vegetation)
+# M.L : plotto i punti con la quarta variabile(vegetation)
 plot(preds$vegetation, col=cl)
-points(species[species$Occurrence == 1,], pch=16) # preferisce una condizione ombreggiata
+points(species[species$Occurrence == 1,], pch=16) # M.L : preferisce una condizione ombreggiata
 
-# alla fine, elevation bassa, temp alta, precipitaz. intermedie, favorevole alla coprtura della vegetazione
+# M.L : alla fine, elevation bassa, temp alta, precipitaz. intermedie, favorevole alla coprtura della vegetazione
 
-# MODELLO LINEARE generalizzato per predire le aree di probabilita di presenza date dai punti che ho e dalle varie variabili
+# M.L : MODELLO LINEARE generalizzato per predire le aree di probabilita di presenza date dai punti che ho e dalle varie variabili
 
 d <- sdmData(train=species, predictors=preds) # d= dati
 d
 
-# creo un modello che ha calcolato nuovi punti in base ai punti inizali che ho dato e in base alle 4 variabili 
+# M.L : creo un modello che ha calcolato nuovi punti in base ai punti inizali che ho dato e in base alle 4 variabili 
 
-m1 <- sdm(Occurrence ~ elevation + precipitation + temperature + vegetation, data=d, methods='glm') # ~ è come scrivere = (ma è piu elegante)
-p1 <- predict(m1, newdata=preds) # PREVISIONE
+m1 <- sdm(Occurrence ~ elevation + precipitation + temperature + vegetation, data=d, methods='glm') # M.L : ~ è come scrivere = (ma è piu elegante)
+p1 <- predict(m1, newdata=preds) # M.L : PREVISIONE
 
 plot(p1, col=cl)
-points(species[species$Occurrence == 1,], pch=16) # mappa di distribuzione prevista per la specie
+points(species[species$Occurrence == 1,], pch=16) # M.L : mappa di distribuzione prevista per la specie
 
 
 
