@@ -345,7 +345,7 @@ plot(covid$country,covid$cases)    # M.L : $ collega un pezzo ad un altro, in qu
 plot(covid$country,covid$cases,las=0)  # M.L : per metterlo verticale
 plot(covid$country,covid$cases,las=1)  # M.L : las=1 le etichette di asse Y diventano orizzontali
 plot(covid$country,covid$cases,las=2)  # M.L : las=2 le etichette della asse X sono verticali
-plot(covid$country,covid$cases,las=3)  # lM.L : aberls verticali
+plot(covid$country,covid$cases,las=3)  # M.L : verticali
 
 # M.L : "cex.axis" per rimpicciolire le scritte di asse X
 plot(covid$country,covid$cases,las=3,cex.lab=0.5, cex.axis=0.5)
@@ -636,7 +636,7 @@ plotRGB(p224r63_2011, r=4, g=3, b=2,stretch="Lin")
 
 # M.L : IMMAGINE formata : le piante diventeranno di colore rosso 
 
-# M.L : adesso faccio un plot delle due immagini( 2011 e 1988) in un multiprame(par mfrow(multiframe row))
+# M.L : adesso faccio un plot delle due immagini( 2011 e 1988) in un multiframe(par mfrow(multiframe row))
 # M.L : main (è per aggiungere un titolo ai grafici)
 par(mfrow=c(2,1))
 
@@ -667,7 +667,7 @@ difdvi <- dvi2011-dvi1988
 plot(difdvi)
 cldifdvi <- colorRampPalette(c('red','white','blue'))(100) 
 plot(difdvi,cl=cldifdvi)
-# M.L : tutte le zone dove è stata tagliata la vegetzione è in colore rosso
+# M.L : tutte le zone dove è stata tagliata la vegetazione sono di colore rosso
 # M.L : colore blu invece pinate che stanno meglio 
 # M.L : "binaco" situzione stabile 
 
@@ -989,7 +989,7 @@ library(gridExtra)
 library(RStoolbox)
 
 
-# M.L : Ananisi multitemporali con terreno suddiviso in varie classi di copertura del suolo 
+# M.L : Analisi multitemporali con terreno suddiviso in varie classi di copertura del suolo 
 
 setwd("~/Desktop/Eco del Paesaggio/LAB")
 
@@ -1189,7 +1189,7 @@ par(mfrow=c(1,2))
 plot(EN01,col=cl)
 plot(EN13,col=cl)    
 
-# M.L : CON DEV.OFF() TORGLO LA PAR
+# M.L : CON DEV.OFF() TOLGO LA PAR
 
 # M.L : faccio una differenza 
 
@@ -1219,7 +1219,7 @@ plot(EN01,EN02,col=cl)
 
 ########### DAY 2
 
-# M.L : come faccio ad imporatre tutti ifile allo stesso tempo? SE HO TANTI FILES!!
+# M.L : come faccio ad imporatre tutti i file allo stesso tempo? SE HO TANTI FILES!!
 # M.L : devo creare una cartella all'interno della cartella LAB e cambiare la working directory
 # M.L : metto tutte le immagini nella nuova cartella "esa_no2" e la imposto come working directory
 
@@ -1245,11 +1245,11 @@ cl <- colorRampPalette(c("red","orange","yellow"))(100)
 plot(EN,col=cl)
 
 
-######### DAY 3 (12 amggio)
+######### DAY 3 (12 maggio)
 
 library(sp)
 library(raster)
-setwd("~/Desktop/Eco del Paesaggio/LAB/esa_no2")  # M.L : "esa_no2" sarà la mia working direcorty
+setwd("~/Desktop/Eco del Paesaggio/LAB/esa_no2")  # M.L : "esa_no2" sarà la mia working directory
 rlist <- list.files(pattern=".png")
 
  # M.L : adesso faccio la differenza dei pixel tra le immagini EN01 ed EN13 e lo plotto
@@ -1320,7 +1320,7 @@ setwd("~/Desktop/Eco del Paesaggio/LAB/SNOW")
 
 rlist <- list.files(pattern=".tif", full.names=T)
 
-# M.L : lapply apllica dei comandi a degli interi lista di file. Nel nostro caso è la funzione raster
+# M.L : lapply applica dei comandi all' intera lista di file. Nel nostro caso è la funzione raster
 list_rast <- lapply(rlist, raster)
 
 # M.L : vogliamo creare uno stack
